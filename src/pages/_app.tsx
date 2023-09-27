@@ -1,61 +1,73 @@
-import { type AppType } from "next/app";
-
-import { api } from "@/utils/api";
-
-import "@/styles/globals.css";
-import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
-import { ModeToggle } from "@/components/ui/theme-mode-toggle";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
-  NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { ThemeProvider } from "next-themes";
-import Link from "next/link";
-import Head from "next/head";
-import { Home, Menu, PersonStanding, TerminalSquare } from "lucide-react";
-import { useWindowSize } from "@uidotdev/usehooks";
+import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ui/theme-mode-toggle";
+import "@/styles/globals.css";
+import { api } from "@/utils/api";
+import { useWindowSize } from "@uidotdev/usehooks";
+import { Home, Menu, PersonStanding, TerminalSquare } from "lucide-react";
+import { ThemeProvider } from "next-themes";
+import { type AppType } from "next/app";
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+
+function NavItem({
+  href,
+  children,
+  ...props
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  const router = useRouter();
+  const isActive = router.asPath === href;
+
+  return (
+    <NavigationMenuItem>
+      <Link href={href} legacyBehavior passHref {...props}>
+        <NavigationMenuLink
+          className={navigationMenuTriggerStyle()}
+          active={isActive}
+        >
+          {children}
+        </NavigationMenuLink>
+      </Link>
+    </NavigationMenuItem>
+  );
+}
 
 function NavItems({ isVertical = false }) {
   return (
     <NavigationMenuList
       className={isVertical ? "min-w-full flex-1 flex-col" : ""}
     >
-      <NavigationMenuItem>
-        <Link href="/" legacyBehavior passHref>
-          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-            <Home className="mr-2 h-4 w-4" />
-            Home
-          </NavigationMenuLink>
-        </Link>
-      </NavigationMenuItem>
+      <NavItem href="/">
+        <Home className="mr-2 h-4 w-4" />
+        Home
+      </NavItem>
 
-      <NavigationMenuItem>
-        <Link href="/projects" legacyBehavior passHref>
-          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-            <TerminalSquare className="mr-2 h-4 w-4" />
-            Projects
-          </NavigationMenuLink>
-        </Link>
-      </NavigationMenuItem>
+      <NavItem href="/projects">
+        <TerminalSquare className="mr-2 h-4 w-4" />
+        Projects
+      </NavItem>
 
-      <NavigationMenuItem>
-        <Link href="/about-me" legacyBehavior passHref>
-          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-            <PersonStanding className="mr-2 h-4 w-4" />
-            About Me
-          </NavigationMenuLink>
-        </Link>
-      </NavigationMenuItem>
+      <NavItem href="/about-me">
+        <PersonStanding className="mr-2 h-4 w-4" />
+        About Me
+      </NavItem>
     </NavigationMenuList>
   );
 }
