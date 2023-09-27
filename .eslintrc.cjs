@@ -24,7 +24,6 @@ const config = {
       },
     ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-    "@typescript-eslint/no-unused-imports": ["warn"]
   },
   ignorePatterns: ["src/components/ui/*.tsx"]
 };
