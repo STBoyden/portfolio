@@ -1,3 +1,5 @@
+import "@/styles/globals.css";
+
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -14,7 +16,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ModeToggle } from "@/components/ui/theme-mode-toggle";
-import "@/styles/globals.css";
 import { api } from "@/utils/api";
 import { useWindowSize } from "@uidotdev/usehooks";
 import { Home, Menu, PersonStanding, TerminalSquare } from "lucide-react";
