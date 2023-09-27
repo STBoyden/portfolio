@@ -1,4 +1,20 @@
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useWindowSize } from "@uidotdev/usehooks";
+import { PersonStandingIcon } from "lucide-react";
 import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+
+import avatar from "public/avatar.png";
 
 export default function Home() {
   return (
@@ -11,7 +27,60 @@ export default function Home() {
         />
       </Head>
 
-      <h1>Samuel Boyden</h1>
+      <Card className="w-[400px] shrink lg:w-[500px]">
+        <CardHeader>
+          <CardTitle>A brief bit about me...</CardTitle>
+        </CardHeader>
+        <CardContent className="flex shrink flex-row">
+          <AspectRatio
+            ratio={1 / 1}
+            className="min-h-100 min-w-100 flex grow lg:min-h-[128px] lg:min-w-[128px]"
+          >
+            <Image
+              src={avatar}
+              alt="Samuel Boyden's portrait"
+              width={100}
+              height={100}
+              className="rounded-full object-cover"
+            />
+          </AspectRatio>
+          <span className="ml-2 border-l-2 pl-2">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
+            voluptatum perferendis totam, repellendus ut quae recusandae labore
+            laborum necessitatibus ullam hic deleniti culpa, assumenda molestias
+            id excepturi, placeat quos. Ratione!
+          </span>
+        </CardContent>
+        <CardFooter className="flex items-center justify-center">
+          <Link href="/about-me" passHref>
+            <Button size="lg">
+              <PersonStandingIcon className="mr-2 h-4 w-4" /> About Me
+            </Button>
+          </Link>
+        </CardFooter>
+      </Card>
+
+      {/* <div className="flex max-w-lg flex-col lg:flex-row">
+        <Image
+          src="/avatar.png"
+          alt="Samuel Boyden's portrait"
+          width={128}
+          height={128}
+          className="rounded-full lg:min-h-[128px] lg:min-w-[128px]"
+        />
+        <blockquote className="lg:ml-2 lg:border-l-2 lg:pl-2">
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsum
+          pariatur mollitia aut, facere accusamus expedita enim non earum culpa
+          dolore dolorem. Atque quibusdam esse nam dolor ipsa temporibus illo
+          rem.
+          <br />
+          To learn more, please click{" "}
+          <Link href="/about-me" className="inline">
+            <PersonStandingIcon className="mr-2" />
+            About me
+          </Link>
+        </blockquote>
+      </div> */}
     </>
   );
 }
