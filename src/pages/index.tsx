@@ -1,9 +1,9 @@
+import { ImageWithFallback } from "@/components/image-with-fallback";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -11,12 +11,34 @@ import {
 import { useWindowSize } from "@uidotdev/usehooks";
 import { PersonStandingIcon } from "lucide-react";
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
 
-import avatar from "public/avatar.png";
+function PortraitPicture({
+  windowWidth,
+  className,
+}: {
+  windowWidth: number;
+  className?: string;
+}) {
+  return (
+    <ImageWithFallback
+      src="https://avatars.githubusercontent.com/u/25185976"
+      alt="Samuel Boyden's GitHub profile picture"
+      width={windowWidth >= 768 ? 256 : 75}
+      height={windowWidth >= 768 ? 256 : 75}
+      className={`min-h-[75px] min-w-[75px] flex-grow rounded-full ${
+        className ?? ""
+      }`}
+    />
+  );
+}
 
 export default function Home() {
+  let { width: windowWidth } = useWindowSize();
+  if (windowWidth === null) {
+    windowWidth = 0;
+  }
+
   return (
     <>
       <Head>
@@ -27,60 +49,51 @@ export default function Home() {
         />
       </Head>
 
-      <Card className="w-[400px] shrink lg:w-[500px]">
+      <Card className="w-[400px] shrink lg:w-[768px]">
         <CardHeader>
           <CardTitle>A brief bit about me...</CardTitle>
         </CardHeader>
-        <CardContent className="flex shrink flex-row">
-          <AspectRatio
-            ratio={1 / 1}
-            className="min-h-100 min-w-100 flex grow lg:min-h-[128px] lg:min-w-[128px]"
-          >
-            <Image
-              src={avatar}
-              alt="Samuel Boyden's portrait"
-              width={100}
-              height={100}
-              className="rounded-full object-cover"
+        <CardContent className="flex shrink flex-col items-center lg:flex-row">
+          {windowWidth >= 1024 && (
+            <PortraitPicture
+              className="my-auto max-h-[256px]"
+              windowWidth={windowWidth}
             />
-          </AspectRatio>
-          <span className="ml-2 border-l-2 pl-2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
-            voluptatum perferendis totam, repellendus ut quae recusandae labore
-            laborum necessitatibus ullam hic deleniti culpa, assumenda molestias
-            id excepturi, placeat quos. Ratione!
+          )}
+          {windowWidth < 1024 && (
+            <AspectRatio
+              ratio={1 / 1}
+              className="m-auto flex max-h-[256px] min-h-[75px] min-w-[75px] max-w-[256px] items-center justify-center lg:m-0"
+            >
+              <PortraitPicture windowWidth={windowWidth} />
+            </AspectRatio>
+          )}
+
+          <span className="lg:ml-2 lg:border-l-2 lg:pl-2">
+            I am an aspiring software developer, currently studying a BSc
+            Computer Science degree, in my third year. I am self-taught in
+            programming, and have a strong focus on full-stack.
+            <br />
+            <br />
+            This website functions as a portfolio website for future employment
+            (please see the{" "}
+            <Link href="/projects" className="underline">
+              projects page
+            </Link>
+            ), and to practice my front-end design skills. This website was
+            developed using NextJS, and shadcn-ui components (which itself uses
+            Radix and TailwindCSS).
           </span>
         </CardContent>
         <CardFooter className="flex items-center justify-center">
           <Link href="/about-me" passHref>
             <Button size="lg">
-              <PersonStandingIcon className="mr-2 h-4 w-4" /> About Me
+              <PersonStandingIcon className="mr-2 ml-[-0.5rem] h-4 w-4" /> About
+              Me
             </Button>
           </Link>
         </CardFooter>
       </Card>
-
-      {/* <div className="flex max-w-lg flex-col lg:flex-row">
-        <Image
-          src="/avatar.png"
-          alt="Samuel Boyden's portrait"
-          width={128}
-          height={128}
-          className="rounded-full lg:min-h-[128px] lg:min-w-[128px]"
-        />
-        <blockquote className="lg:ml-2 lg:border-l-2 lg:pl-2">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsum
-          pariatur mollitia aut, facere accusamus expedita enim non earum culpa
-          dolore dolorem. Atque quibusdam esse nam dolor ipsa temporibus illo
-          rem.
-          <br />
-          To learn more, please click{" "}
-          <Link href="/about-me" className="inline">
-            <PersonStandingIcon className="mr-2" />
-            About me
-          </Link>
-        </blockquote>
-      </div> */}
     </>
   );
 }
