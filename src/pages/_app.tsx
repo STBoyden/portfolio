@@ -18,7 +18,14 @@ import {
 import { ModeToggle } from "@/components/ui/theme-mode-toggle";
 import { api } from "@/utils/api";
 import { useWindowSize } from "@uidotdev/usehooks";
-import { Home, Menu, PersonStanding, TerminalSquare } from "lucide-react";
+import {
+  Feather,
+  Github,
+  Home,
+  Menu,
+  PersonStanding,
+  TerminalSquare,
+} from "lucide-react";
 import { ThemeProvider } from "next-themes";
 import { type AppType } from "next/app";
 import Head from "next/head";
@@ -68,6 +75,11 @@ function NavItems({ isVertical = false }) {
       <NavItem href="/about-me">
         <PersonStanding className="mr-2 h-4 w-4" />
         About Me
+      </NavItem>
+
+      <NavItem href="https://blog.stboyden.com">
+        <Feather className="mr-2 h-4 w-4" />
+        Blog
       </NavItem>
     </NavigationMenuList>
   );
@@ -127,6 +139,11 @@ const MyApp: AppType = ({ Component, pageProps }) => {
             </NavigationMenu>
 
             <div className="ml-auto md:ml-0">
+              <Link href="https://github.com/STBoyden" passHref>
+                <Button size="icon">
+                  <Github className="h-4 w-4" />
+                </Button>
+              </Link>
               <ModeToggle />
             </div>
           </div>
