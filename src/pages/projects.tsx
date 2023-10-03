@@ -128,7 +128,7 @@ export default function Projects() {
                         >
                           <Badge>
                             <GitBranchIcon className="w-4 h-4 mr-2" /> {prCount}{" "}
-                            pull requests(s)
+                            pull request(s)
                           </Badge>
                         </Link>
                       </div>
