@@ -18,11 +18,17 @@ const config = {
     defaultLocale: "en",
   },
   images: {
+    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
         pathname: "/u/25185976",
+      },
+      {
+        protocol: "https",
+        hostname: "socialify.git.ci",
+        pathname: "/STBoyden/**",
       },
     ],
   },
