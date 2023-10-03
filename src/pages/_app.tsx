@@ -18,6 +18,7 @@ import {
 import { ModeToggle } from "@/components/ui/theme-mode-toggle";
 import { api } from "@/utils/api";
 import { useWindowSize } from "@uidotdev/usehooks";
+import { Analytics } from "@vercel/analytics/react";
 import {
   Feather,
   Github,
@@ -150,6 +151,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           <Separator />
           <main className="flex min-h-screen flex-col items-center justify-center">
             <Component {...pageProps} />
+            <Analytics />
           </main>
         </>
       </ThemeProvider>
