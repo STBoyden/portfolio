@@ -140,8 +140,12 @@ const MyApp: AppType = ({ Component, pageProps }) => {
             </NavigationMenu>
 
             <div className="ml-auto md:ml-0">
-              <Link href="https://github.com/STBoyden" passHref>
-                <Button size="icon">
+              <Link
+                aria-label="GitHub profile link"
+                href="https://github.com/STBoyden"
+                passHref
+              >
+                <Button aria-label="GitHub profile button" size="icon">
                   <Github className="h-4 w-4" />
                 </Button>
               </Link>
