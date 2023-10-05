@@ -1,4 +1,5 @@
 import { ImageWithFallback } from "@/components/image-with-fallback";
+import * as Typography from "@/components/typography";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import {
@@ -70,22 +71,25 @@ export default function Home() {
           )}
 
           <span className="lg:ml-2 lg:border-l-2 lg:pl-2">
-            I am an aspiring software developer, currently studying a BSc
-            Computer Science degree, in my final year. I am self-taught in
-            programming, and have a strong focus on full-stack, with experience
-            using UNIX-based systems (Linux, and MacOS) and Windows.
-            <br />
-            <br />
-            This website functions as a portfolio website for future employment
-            (please see the{" "}
-            <Link
-              href="/projects"
-              className="underline hover:font-semibold hover:text-secondary-foreground hover:italic"
-            >
-              projects page
-            </Link>
-            ), and to practice my front-end design skills. This website was
-            developed using NextJS, shadcn-ui components, and TailwindCSS.
+            <Typography.Paragraph>
+              I am an aspiring software developer, currently studying a BSc
+              Computer Science degree, in my final year. I am self-taught in
+              programming, and have a strong focus on full-stack, with
+              experience using UNIX-based systems (Linux, and MacOS) and
+              Windows.
+            </Typography.Paragraph>
+            <Typography.Paragraph>
+              This website functions as a portfolio website for future
+              employment (please see the{" "}
+              <Link
+                href="/projects"
+                className="underline hover:font-semibold hover:text-secondary-foreground hover:italic"
+              >
+                projects page
+              </Link>
+              ), and to practice my front-end design skills. This website was
+              developed using NextJS, shadcn-ui components, and TailwindCSS.
+            </Typography.Paragraph>
           </span>
         </CardContent>
         <CardFooter className="flex items-center justify-center">
