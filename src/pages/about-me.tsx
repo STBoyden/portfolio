@@ -107,6 +107,20 @@ export default function AboutMe() {
               </Typography.Paragraph>
             </AccordionContent>
           </AccordionItem>
+
+          <AccordionItem value="hobbies-gaming">
+            <AccordionTrigger>
+              <Typography.Header3>Gaming</Typography.Header3>
+            </AccordionTrigger>
+            <AccordionContent>
+              <Typography.Paragraph>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil
+                alias placeat ducimus! Vitae magni possimus ducimus, consequatur
+                vel perspiciatis. Nihil odit illo iusto consectetur voluptate.
+                Recusandae rerum repellendus iure modi.
+              </Typography.Paragraph>
+            </AccordionContent>
+          </AccordionItem>
         </Accordion>
       </span>
     </>
