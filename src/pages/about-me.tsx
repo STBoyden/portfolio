@@ -107,6 +107,50 @@ export default function AboutMe() {
               </Typography.Paragraph>
             </AccordionContent>
           </AccordionItem>
+
+          <AccordionItem value="hobbies-gaming">
+            <AccordionTrigger>
+              <Typography.Header3>Gaming</Typography.Header3>
+            </AccordionTrigger>
+            <AccordionContent>
+              <Typography.Paragraph>
+                I have loved playing video games since I was a child, starting
+                off with the Medal of Honor Breakthrough Warchest discs for
+                Windows XP. My brother, my dad, and I would play LAN against
+                each other when we could, and usually my dad would win.
+              </Typography.Paragraph>
+              <Typography.Paragraph>
+                Eventually, I was given a Gameboy Advance SP, on which I would
+                only play Pokémon Sapphire. In about 2009, I was given a
+                Nintendo DS Lite, with Pokémon Diamond, and then eventually
+                Platinum. These two games I would play <em>religiously</em> and
+                would constantly play them non-stop. I still have the original
+                cartridges (as well as some replacements because I had
+                temporarily lost them at times). A while after the 3DS and Omega
+                Ruby and Alpha Sapphire were released, I was gifted a red 3DS XL
+                with Pokémon Alpha Sapphire - which I played constantly when I
+                should have been doing homework.
+              </Typography.Paragraph>
+              <Typography.Paragraph>
+                Alongside my love of the Pokémon franchise, I would also love
+                Minecraft - like every kid and teen in the early 2010s.
+                Minecraft introduced me to the concept of {'"'}programming{'"'}{" "}
+                with Redstone, which allowed me to make cool and complex
+                structures that could be interacted with using levers, buttons,
+                pistons, etc. Minecraft is still one of my favourite games that
+                I still play somewhat regularly.
+              </Typography.Paragraph>
+              <Typography.Paragraph>
+                When I got older, I would eventually pick up Skyrim - which to
+                this day is still my most played game (in terms of hours played)
+                of all time across all the platforms I own it, and all versions
+                which have been released. Skyrim would introduce me to the other
+                Bethesda-owned franchises such as Fallout. Fallout New Vegas
+                stands alongside Skyrim as one of my most favourite, and most
+                played games in play time.
+              </Typography.Paragraph>
+            </AccordionContent>
+          </AccordionItem>
         </Accordion>
       </span>
     </>
