@@ -100,9 +100,11 @@ export default function AboutMe() {
                 dad bought himself a new camera, a Nikon D7500, and gave me his
                 then current Nikon D80. While the D80 was already old by this
                 time, it was still a huge upgrade from the FujiFilm - this time
-                actually allowing me to swap lenses!
+                actually allowing me to swap lenses! My usage of the D80
+                deepened my love for the hobby, eventually driving me to buy my
+                own camera at the beginning of my second year of university, a
+                Nikon D5600 - the camera I still use today.
               </Typography.Paragraph>
-              {/* TODO: More about photography */}
             </AccordionContent>
           </AccordionItem>
         </Accordion>
