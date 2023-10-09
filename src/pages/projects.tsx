@@ -54,8 +54,8 @@ export default function Projects() {
   const data = getData();
   data.sort((a, b) => {
     return (
-      new Date(a[0].data.updated_at).getDate() -
-      new Date(b[0].data.updated_at).getDate()
+      new Date(a[0].data.pushed_at).getDate() -
+      new Date(b[0].data.pushed_at).getDate()
     );
   });
 
@@ -135,7 +135,7 @@ export default function Projects() {
                       <div className="flex gap-2 mt-1">
                         <Badge>
                           <ClockIcon className="w-4 h-4 mr-2" /> Last updated:{" "}
-                          {new Date(data.updated_at).toLocaleString()}
+                          {new Date(data.pushed_at).toLocaleString()}
                         </Badge>
                         <Badge>
                           <CodeIcon className="w-4 h-4 mr-2" /> Language:{" "}
