@@ -8,7 +8,7 @@
  */
 
 import { env } from "@/env.mjs";
-import { TRPCError, initTRPC } from "@trpc/server";
+import { initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { Octokit } from "octokit";
 import superjson from "superjson";
@@ -89,20 +89,6 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 export const createTRPCRouter = t.router;
 export const middleware = t.middleware;
 
-const isGitHubAuthenticated = middleware(async (opts) => {
-  const { ctx } = opts;
-
-  const {
-    data: { login },
-  } = await ctx.octokit.rest.users.getAuthenticated();
-
-  if (login !== env.GITHUB_USERNAME) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
-
-  return opts.next({ ctx: { username: login } });
-});
-
 /**
  * Public (unauthenticated) procedure
  *
@@ -111,6 +97,3 @@ const isGitHubAuthenticated = middleware(async (opts) => {
  * are logged in.
  */
 export const publicProcedure = t.procedure;
-export const authenticatedProcedure = publicProcedure.use(
-  isGitHubAuthenticated,
-);
