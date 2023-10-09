@@ -1,35 +1,38 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { Octokit } from "octokit";
+import { authenticatedProcedure, createTRPCRouter } from "@/server/api/trpc";
 import { z } from "zod";
 
-export const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-
 export const githubRouter = createTRPCRouter({
-  data: publicProcedure
+  data: authenticatedProcedure
     .input(z.object({ repositoryName: z.string() }))
-    .query(async ({ input }) => {
-      const repositoryInfo = await octokit.request(
-        "GET /repos/{owner}/{repo}",
-        {
-          owner: "STBoyden",
-          repo: input.repositoryName,
-          headers: {
-            accept: "application/vnd.github+json",
-            "X-GitHub-Api-Version": "2022-11-28",
-          },
-        },
-      );
+    .query(
+      async ({ ctx: { octokit, username }, input: { repositoryName } }) => {
+        const infoReq = octokit.rest.repos.get({
+          owner: username,
+          repo: repositoryName,
+        });
+        const prsReq = octokit.rest.pulls.list({
+          owner: username,
+          repo: repositoryName,
+        });
+        const issuesReq = octokit.rest.issues.listForRepo({
+          owner: username,
+          repo: repositoryName,
+          pulls: false,
+          state: "open",
+        });
+        const forksReq = octokit.rest.repos.listForks({
+          owner: username,
+          repo: repositoryName,
+        });
 
-      return { info: repositoryInfo };
-    }),
-  pullRequestsCount: publicProcedure
-    .input(z.object({ repositoryName: z.string() }))
-    .query(async ({ input }) => {
-      const prs = await octokit.rest.pulls.list({
-        owner: "STBoyden",
-        repo: input.repositoryName,
-      });
+        const [info, prs, issues, forks] = await Promise.all([
+          infoReq,
+          prsReq,
+          issuesReq,
+          forksReq,
+        ]);
 
-      return prs.data.length;
-    }),
+        return { info: info, prs: prs, issues: issues, forks: forks };
+      },
+    ),
 });

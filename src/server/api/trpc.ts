@@ -7,8 +7,10 @@
  * need to use are documented accordingly near the end.
  */
 
-import { initTRPC } from "@trpc/server";
+import { env } from "@/env.mjs";
+import { TRPCError, initTRPC } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { Octokit } from "octokit";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -20,7 +22,9 @@ import { ZodError } from "zod";
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 
-type CreateContextOptions = Record<string, never>;
+type CreateContextOptions = {
+  octokit: Octokit;
+};
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
@@ -32,8 +36,8 @@ type CreateContextOptions = Record<string, never>;
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = (_opts: CreateContextOptions) => {
-  return {};
+const createInnerTRPCContext = (opts: CreateContextOptions) => {
+  return opts;
 };
 
 /**
@@ -43,7 +47,9 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({});
+  const octokit = new Octokit({ auth: env.GITHUB_TOKEN });
+
+  return createInnerTRPCContext({ octokit: octokit });
 };
 
 /**
@@ -81,6 +87,21 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
  * @see https://trpc.io/docs/router
  */
 export const createTRPCRouter = t.router;
+export const middleware = t.middleware;
+
+const isGitHubAuthenticated = middleware(async (opts) => {
+  const { ctx } = opts;
+
+  const {
+    data: { login },
+  } = await ctx.octokit.rest.users.getAuthenticated();
+
+  if (login !== env.GITHUB_USERNAME) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  return opts.next({ ctx: { username: login } });
+});
 
 /**
  * Public (unauthenticated) procedure
@@ -90,3 +111,6 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+export const authenticatedProcedure = publicProcedure.use(
+  isGitHubAuthenticated,
+);
