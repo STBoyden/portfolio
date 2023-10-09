@@ -15,4 +15,27 @@ export default createNextApiHandler({
           );
         }
       : undefined,
+  // cache github api requests
+  responseMeta({ ctx, paths, errors, type }) {
+    const allGithub = paths && paths.every((path) => path.includes("github"));
+    const allOkay = errors.length === 0;
+    const isQuery = type === "query";
+
+    if (
+      ctx?.octokit &&
+      allGithub &&
+      allOkay &&
+      isQuery &&
+      env.NODE_ENV !== "development"
+    ) {
+      const ONE_DAY_IN_SECONDS = 60 * 60 * 24; // invalidate every 24 hours
+      return {
+        headers: {
+          "cache-control": `s-maxage=1, stale-while-revalidate=${ONE_DAY_IN_SECONDS}`,
+        },
+      };
+    }
+
+    return {};
+  },
 });
