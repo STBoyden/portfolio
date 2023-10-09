@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { env } from "@/env.mjs";
 import { api } from "@/utils/api";
 import {
   ClockIcon,
@@ -27,36 +28,36 @@ const repositories = [
   "tracectrl",
   "portfolio",
   "codectrl-go-logger",
+  "ocean",
 ];
 
 // eslint-disable-next-line @typescript-eslint/require-await
 function getData() {
-  const repos = [];
+  const repositoryData = [];
 
   for (const repoName of repositories) {
     const response = api.github.data.useQuery({
       repositoryName: repoName,
     });
-    const prs = api.github.pullRequestsCount.useQuery({
-      repositoryName: repoName,
-    });
 
-    if (response?.data?.info === undefined) continue;
-    if (prs?.data === undefined) continue;
+    if (response?.data === undefined) continue;
+    const {
+      info: { data: info },
+      prs: { data: prs },
+      issues: { data: issues },
+      forks: { data: forks },
+    } = response?.data;
 
-    repos.push([response.data.info, prs.data] as const);
+    repositoryData.push({ info, prs, issues, forks } as const);
   }
 
-  return repos;
+  return repositoryData;
 }
 
 export default function Projects() {
   const data = getData();
-  data.sort((a, b) => {
-    return (
-      new Date(a[0].data.pushed_at).getDate() -
-      new Date(b[0].data.pushed_at).getDate()
-    );
+  data.sort(({ info: a }, { info: b }) => {
+    return new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime();
   });
 
   return (
@@ -67,7 +68,11 @@ export default function Projects() {
       </Head>
       <div className="mt-2">
         <div className="mb-2 w-full p-2 flex">
-          <Link className="mx-auto" href="https://github.com/STBoyden" passHref>
+          <Link
+            className="mx-auto"
+            href={`https://github.com/${env.NEXT_PUBLIC_GITHUB_USERNAME}`}
+            passHref
+          >
             <Button>
               <GithubIcon className="mr-2" />
               <p className="text-lg">My GitHub profile</p>
@@ -83,63 +88,63 @@ export default function Projects() {
         )}
         {data && (
           <div className="grid-cols-1 md:grid-cols-2 grid-flow-row grid gap-2">
-            {data.map(([{ data }, prCount]) => {
+            {data.map(({ info, prs, issues, forks }) => {
               return (
-                <Link key={data.url} href={data.html_url}>
+                <Link key={info.url} href={info.html_url}>
                   <Card className="hover:bg-muted">
                     <CardHeader>
-                      <CardTitle>{data.full_name}</CardTitle>
+                      <CardTitle>{info.full_name}</CardTitle>
                       <CardDescription>
-                        {data.description ?? "No description."}
+                        {info.description ?? "No description."}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <Image
-                        width={326}
+                        width={330}
                         height={100}
                         priority
-                        className="h-auto w-auto max-h-[326px] rounded-xl"
-                        alt={`Generated picture for ${data.full_name}`}
-                        src={`https://socialify.git.ci/STBoyden/${data.name}/image?language=1&name=1&owner=1&pattern=Circuit%20Board&theme=Auto`}
+                        className="h-auto w-auto max-h-[330px] rounded-xl"
+                        alt={`Generated picture for ${info.full_name}`}
+                        src={`https://socialify.git.ci/${info.full_name}/image?language=1&name=1&owner=1&pattern=Circuit%20Board&theme=Auto`}
                       ></Image>
                     </CardContent>
                     <CardFooter className="flex-col">
                       <div className="flex w-full gap-2">
                         <Link
                           className="ml-auto"
-                          href={`https://github.com/STBoyden/${data.name}/fork`}
+                          href={`https://github.com/${info.full_name}/fork`}
                         >
                           <Badge>
-                            <GitForkIcon className="w-4 h-4 mr-2" />{" "}
-                            {data.forks_count} fork(s)
+                            <GitForkIcon className="w-4 h-4 mr-2" />
+                            {forks.length} fork(s)
                           </Badge>
                         </Link>
                         <Link
-                          href={`https://github.com/STBoyden/${data.name}/issues`}
+                          href={`https://github.com/${info.full_name}/issues`}
                         >
                           <Badge>
-                            <FileWarningIcon className="w-4 h-4 mr-2" />{" "}
-                            {data.open_issues_count} issue(s)
+                            <FileWarningIcon className="w-4 h-4 mr-2" />
+                            {issues.length} issue(s)
                           </Badge>
                         </Link>
                         <Link
                           className="mr-auto"
-                          href={`https://github.com/STBoyden/${data.name}/pulls`}
+                          href={`https://github.com/${info.full_name}/pulls`}
                         >
                           <Badge>
-                            <GitBranchIcon className="w-4 h-4 mr-2" /> {prCount}{" "}
-                            pull request(s)
+                            <GitBranchIcon className="w-4 h-4 mr-2" />
+                            {prs.length} pull request(s)
                           </Badge>
                         </Link>
                       </div>
                       <div className="flex gap-2 mt-1">
                         <Badge>
                           <ClockIcon className="w-4 h-4 mr-2" /> Last updated:{" "}
-                          {new Date(data.pushed_at).toLocaleString()}
+                          {new Date(info.pushed_at).toLocaleString()}
                         </Badge>
                         <Badge>
                           <CodeIcon className="w-4 h-4 mr-2" /> Language:{" "}
-                          {data.language}
+                          {info.language}
                         </Badge>
                       </div>
                     </CardFooter>
