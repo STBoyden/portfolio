@@ -89,7 +89,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 export const createTRPCRouter = t.router;
 export const middleware = t.middleware;
 
-const isAuthenticated = middleware(async (opts) => {
+const isGitHubAuthenticated = middleware(async (opts) => {
   const { ctx } = opts;
 
   const {
@@ -111,4 +111,6 @@ const isAuthenticated = middleware(async (opts) => {
  * are logged in.
  */
 export const publicProcedure = t.procedure;
-export const authenticatedProcedure = publicProcedure.use(isAuthenticated);
+export const authenticatedProcedure = publicProcedure.use(
+  isGitHubAuthenticated,
+);
