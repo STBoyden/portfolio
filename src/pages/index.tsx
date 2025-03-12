@@ -71,10 +71,12 @@ export default function Home() {
           )}
 
           <span className="lg:ml-2 lg:border-l-2 lg:pl-2">
-            <Typography.Paragraph className="italic">
-              Note: This site is a little outdated - last updated 2 years 
-              ago. I will be updating it soon to reflect latest changes
-              soon.
+            <Typography.Paragraph>
+              <div className="italic">
+                Note: This site is a little outdated - last updated 2 years 
+                ago. I will be updating it soon to reflect latest changes
+                soon.
+              </div>
             </Typography.Paragraph>
             <Typography.Paragraph>
               I am an aspiring software developer, currently studying a BSc
